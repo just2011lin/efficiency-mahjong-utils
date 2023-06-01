@@ -1,12 +1,12 @@
 export enum TILE_TYPE {
   // 万子
-  M = "m",
+  M = 'm',
   // 索子
-  S = "s",
+  S = 's',
   // 饼子
-  P = "p",
+  P = 'p',
   // 字牌
-  Z = "z",
+  Z = 'z',
 }
 
 /**

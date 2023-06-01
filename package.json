@@ -4,12 +4,18 @@
   "description": "麻将牌效辅助方法",
   "main": "src/main.ts",
   "scripts": {
-    "test": "ts-node src/main.ts --loader ts-node/esm"
+    "test": "ts-node src/main.ts --loader ts-node/esm",
+    "lint": "eslint --ext .js,.ts src/"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "eslint": "^8.41.0"
   }
 }

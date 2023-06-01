@@ -1,0 +1,30 @@
+{
+  "root": true,
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    // 使用两个空格来缩进
+    "indent": ["error", 2],
+    // 使用LF作为换行符的格式
+    "linebreak-style": ["error", "unix"],
+    // 与editorconfig的insert_final_newline相对应
+    "eol-last": ["error", "always"],
+    // 与editorconfig的trim_trailing_whitespace相对应
+    "no-trailing-spaces": "error",
+    // 与prettier的printWidth相对应，可以选择关闭或设置一个比printWidth大的值
+    "max-len": "off",
+    // 与prettier的semi相对应
+    "semi": ["error", "always"],
+    // 与prettier的singleQuote相对应
+    "quotes": ["error", "single"],
+    // 与prettier的quoteProps相对应
+    "quote-props": ["error", "as-needed"],
+    // 与prettier的trailingComma相对应
+    "comma-dangle": ["error", "always-multiline"],
+    // 与prettier的bracketSpacing相对应
+    "object-curly-spacing": ["error", "always"],
+    // 与prettier的arrowParens相对应
+    "arrow-parens": ["error", "as-needed"]
+  }
+}

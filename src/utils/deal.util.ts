@@ -1,19 +1,19 @@
-import { TILE_TYPE, TripleGroupTree } from "../type";
+import { TILE_TYPE, TripleGroupTree } from '../type';
 
 // 拆分手牌，将相同类型的牌归在一起
 export function splitPair(pair: string) {
-  let types = ["s", "m", "p", "z"];
+  const types = ['s', 'm', 'p', 'z'];
   const pairCards = {
-    s: "",
-    m: "",
-    p: "",
-    z: "",
+    s: '',
+    m: '',
+    p: '',
+    z: '',
   };
-  let tempStr = "";
-  for (let card of pair) {
+  let tempStr = '';
+  for (const card of pair) {
     if (types.includes(card)) {
       pairCards[card as TILE_TYPE] += tempStr;
-      tempStr = "";
+      tempStr = '';
     } else {
       tempStr += card;
     }
@@ -29,11 +29,11 @@ export function isFace(faceCard: string, type?: string): boolean {
   if (faceCard.length !== 3) {
     return false;
   }
-  let [a, b, c] = faceCard;
+  const [a, b, c] = faceCard;
   if (a === b && b === c) {
     return true;
   }
-  if (type === "z") {
+  if (type === 'z') {
     return false;
   }
   // 转成数字
@@ -68,6 +68,7 @@ export function triplePairs(samePair: string): TripleGroupTree[] {
   let bCard = samePair[b];
   let cCard = samePair[c];
 
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     const tst: TripleGroupTree = {
       value: aCard + bCard + cCard,
@@ -101,11 +102,11 @@ export function triplePairs(samePair: string): TripleGroupTree[] {
 export function flatmapTrileGroupTree(
   data: TripleGroupTree,
   stack: string[] = [],
-  strs: string[][] = []
+  strs: string[][] = [],
 ) {
   if (data.children) {
     stack.push(data.value);
-    data.children.forEach((child) => {
+    data.children.forEach(child => {
       flatmapTrileGroupTree(child, [...stack], strs);
     });
   } else {

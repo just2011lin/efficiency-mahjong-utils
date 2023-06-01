@@ -1,0 +1,21 @@
+root = true
+
+[*]
+# 使用空格来缩进
+indent_style = space
+# 使用2个空格来缩进
+indent_size = 2
+# 编码格式设置为utf-8
+charset = utf-8
+# 换行符使用lf
+end_of_line = lf
+# 文件末尾插入一条空行
+insert_final_newline = true
+# 移除代码行末尾的多余空格
+trim_trailing_whitespace = true
+
+[*.md]
+# markdown文件不插入末尾空行
+insert_final_newline = false
+# markdown文件行末尾不移除多余空格
+trim_trailing_whitespace = false

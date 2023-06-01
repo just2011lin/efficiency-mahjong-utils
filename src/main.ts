@@ -1,29 +1,29 @@
-import { TripleGroupTree } from "./type";
+// import { TripleGroupTree } from './type';
 import {
   flatmapTrileGroupTree,
   isFace,
   splitPair,
   triplePairs,
-} from "./utils/deal.util";
+} from './utils/deal.util';
 
 function createCards(num: number, type: string) {
-  return new Array(num).fill("").map((val, index) => `${index + 1}${type}`);
+  return new Array(num).fill('').map((val, index) => `${index + 1}${type}`);
 }
 
 // 索子牌
-const sCards = createCards(9, "s");
+const sCards = createCards(9, 's');
 
 // 饼子牌
-const pCards = createCards(9, "p");
+const pCards = createCards(9, 'p');
 
 // 万子牌
-const mCards = createCards(9, "m");
+const mCards = createCards(9, 'm');
 
 // 字牌
-const zCards = createCards(7, "z");
+const zCards = createCards(7, 'z');
 
 // 一副牌
-const onePair = "23s133m456789p11z";
+const onePair = '23s133m456789p11z';
 
 // 计算出哪些牌是上述牌的进张
 // isPairFowardCard(onePair, "2m");
@@ -72,10 +72,10 @@ function createFaceObjs(cards: string) {
   // 大于三张的情况，要从中取出三张，然后看是否为面子，然后再看剩余牌中是否有面子
   const tripleGroups = triplePairs(cards);
   const facedStrs: string[][] = [];
-  tripleGroups.forEach((tripleGroup) => {
+  tripleGroups.forEach(tripleGroup => {
     const strss = flatmapTrileGroupTree(tripleGroup);
-    strss.forEach((strs) => {
-      if (strs.every((str) => str.length < 3 || isFace(str))) {
+    strss.forEach(strs => {
+      if (strs.every(str => str.length < 3 || isFace(str))) {
         facedStrs.push(strs);
       }
     });
@@ -83,4 +83,4 @@ function createFaceObjs(cards: string) {
   console.log(facedStrs);
 }
 
-createFaceObjs("1112341");
+createFaceObjs('1112341');
