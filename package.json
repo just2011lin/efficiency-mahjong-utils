@@ -1,0 +1,15 @@
+{
+  "name": "efficiency-mahjong-utils",
+  "version": "0.0.1",
+  "description": "麻将牌效辅助方法",
+  "main": "src/main.ts",
+  "scripts": {
+    "test": "ts-node src/main.ts --loader ts-node/esm"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
