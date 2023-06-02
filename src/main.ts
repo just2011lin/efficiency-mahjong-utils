@@ -1,56 +1,20 @@
-// import { TripleGroupTree } from './type';
 import {
   flatmapTrileGroupTree,
-  isFace,
   splitPair,
   triplePairs,
 } from './utils/deal.util';
 
-function createCards(num: number, type: string) {
-  return new Array(num).fill('').map((val, index) => `${index + 1}${type}`);
-}
-
-// 索子牌
-const sCards = createCards(9, 's');
-
-// 饼子牌
-const pCards = createCards(9, 'p');
-
-// 万子牌
-const mCards = createCards(9, 'm');
-
-// 字牌
-const zCards = createCards(7, 'z');
-
-// 一副牌
-const onePair = '23s133m456789p11z';
-
-// 计算出哪些牌是上述牌的进张
-// isPairFowardCard(onePair, "2m");
-
-// 判断card是否是pair的进张
-// function isPairFowardCard(pair, inCard) {
-//   // 获取摸牌的类型
-//   const cardType = inCard[1];
-//   // 如果手牌没有与摸牌类型相同的牌
-//   // 则其显然不是进张
-//   if (!pair.includes(cardType)) {
-//     return false;
-//   }
-//   // 找出手牌中与摸牌同类型的牌
-//   const pairCard = splitPair(onePair);
-//   const sameCard = pairCard[cardType];
-// //   isCardCanStay(sameCard, inCard);
-// }
+import { isFace } from './utils/is.util';
 
 /**
- * 判断进张是否可以留下
- * @param {string} sameCard 同种数牌或字牌
- * @param {string} inCard 进张
+ * 分析一副牌
+ * @param pair 一副牌
  */
-// function isCardCanStay(sameCard, inCard) {
-//   console.log(sameCard, inCard);
-// }
+function analysePair(pair: string) {
+  const splitedPair = splitPair(pair);
+  const faceObjs = createFaceObjs(splitedPair.p);
+  console.log(faceObjs);
+}
 
 /**
  * 找出这副牌中可以组成面子的所有可能性
@@ -80,7 +44,7 @@ function createFaceObjs(cards: string) {
       }
     });
   });
-  console.log(facedStrs);
+  return facedStrs;
 }
 
-createFaceObjs('1112341');
+analysePair('23s133m456789p11z');
