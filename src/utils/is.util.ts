@@ -79,3 +79,16 @@ function isPartialSame(partial: string, size: number) {
   }
   return false;
 }
+
+/**
+ * 是否为两面搭子
+ * @param partial 部分牌，主要为两张
+ */
+export function isBothPartner(partial: string) {
+  if (partial.length !== 2) {
+    return false;
+  }
+  const [a, b] = partial;
+  const res = Number(a) + 1 === Number(b) || Number(a) - 1 === Number(b);
+  return res && a !== '1' && b !== '1' && a !== '9' && b !== '9';
+}

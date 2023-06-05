@@ -30,6 +30,8 @@
 
 - 是否为两面搭子
 
+`function isBothPartner(partial: string)`
+
 - 是否为坎张搭子
 
 - 是否为边张搭子
