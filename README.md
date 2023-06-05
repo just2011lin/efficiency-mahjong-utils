@@ -34,6 +34,8 @@
 
 - 是否为坎张搭子
 
+`function isThresholdPartner(partial: string)`
+
 - 是否为边张搭子
 
 #### 三张牌的搭子
