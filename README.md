@@ -1,11 +1,18 @@
 # efficiency-mahjong-utils
+
 科学麻将牌效计算的工具方法
 
 ## 是否计算
 
+`src/utils/is.util.ts`
+
 - 是否为顺子
 
+`function isSequence(partial: string, type?: 'm' | 'p' | 's' | 'z')`
+
 - 是否为刻字
+
+``
 
 - 是否为面子
 

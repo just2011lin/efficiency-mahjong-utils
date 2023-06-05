@@ -35,7 +35,7 @@ export function isFace(faceCard: string, type?: TILE_TYPE): boolean {
  * @param type 牌的类型
  * @returns true表示这部分牌是一个顺子
  */
-export function isStraight(partial: string, type?: TILE_TYPE) {
+export function isSequence(partial: string, type?: TILE_TYPE) {
   // 不能是字牌，张数要为3
   if (type === TILE_TYPE.Z || partial.length !== 3) {
     return false;
@@ -53,4 +53,18 @@ export function isStraight(partial: string, type?: TILE_TYPE) {
     [a, b] = [b, a];
   }
   return a + 1 === b && b + 1 === c;
+}
+
+/**
+ * 判断部分牌是不是一个刻子
+ * @param partial 部分牌
+ * @param type 牌的配型
+ * @returns true表示这部分牌是一个刻子
+ */
+export function isTriplet(partial: string) {
+  if (partial.length !== 3) {
+    return false;
+  }
+  const [a, b, c] = partial;
+  return a === b && b === c;
 }

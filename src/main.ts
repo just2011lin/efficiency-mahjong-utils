@@ -4,7 +4,7 @@ import {
   triplePairs,
 } from './utils/deal.util';
 
-import { isFace, isStraight } from './utils/is.util';
+import { isFace, isSequence } from './utils/is.util';
 import { TILE_TYPE } from './utils/type.util';
 
 /**
