@@ -4,7 +4,8 @@ import {
   triplePairs,
 } from './utils/deal.util';
 
-import { isFace } from './utils/is.util';
+import { isFace, isStraight } from './utils/is.util';
+import { TILE_TYPE } from './utils/type.util';
 
 /**
  * 分析一副牌

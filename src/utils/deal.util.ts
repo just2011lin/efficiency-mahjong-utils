@@ -1,4 +1,4 @@
-import { TILE_TYPE, TripleGroupTree } from '../type';
+import { TILE_TYPE, TripleGroupTree } from './type.util';
 
 // 拆分手牌，将相同类型的牌归在一起
 export function splitPair(pair: string) {
