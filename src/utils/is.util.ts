@@ -1,3 +1,4 @@
+import { splitPair } from './deal.util';
 import { TILE_TYPE } from './type.util';
 
 /**
@@ -49,14 +50,14 @@ export function isTriplet(partial: string) {
  * @param partial 部分牌
  * @returns 是否是对子
  */
-export function isPair(partial: string) {
+export function isDouble(partial: string) {
   return isPartialSame(partial, 2);
 }
 
 /**
  * 是否是杠子
  */
-export function isTick(partial: string) {
+export function isFourfold(partial: string) {
   return isPartialSame(partial, 4);
 }
 
@@ -116,4 +117,26 @@ export function isEdgePartner(partial: string) {
   return (
     partial === '12' || partial === '21' || partial === '89' || partial === '98'
   );
+}
+
+/**
+ * 是否胡了
+ * @param pair 一副牌（假设5张）
+ */
+export function isHule(pair: string) {
+  const splitedPair = splitPair(pair);
+  const res = Object.entries(splitedPair).every(([type, partial]) => {
+    if (partial.length === 0) {
+      return true;
+    } else if (partial.length === 2) {
+      return isDouble(partial);
+    } else if (partial.length === 3) {
+      return isFace(partial, type as TILE_TYPE);
+    } else if (partial.length === 5) {
+      // 暂不处理
+      return false;
+    }
+    return false;
+  });
+  return res;
 }

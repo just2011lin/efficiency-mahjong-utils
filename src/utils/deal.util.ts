@@ -96,3 +96,33 @@ function getLeftStr(str: string, a: number, b: number, c: number) {
   const left = str.slice(c + 1);
   return aLeft + bLeft + cLeft + left;
 }
+
+/**
+ *
+ * @param partial 部分牌
+ * @param sizeArr 拆分后每部分的数量，比如[2,3]表示拆分为两张和一个三张
+ */
+// export function randomSplit(partial: string, sizeArr: number[]) {}
+
+/**
+ * 从一副牌中拆出对子和剩余的牌
+ * @param partial 一副牌
+ * @returns Array<[double, left]>
+ */
+export function splitOutDouble(partial: string): Array<[string, string]> {
+  const results: Array<[string, string]> = [];
+  const addedSet: Set<string> = new Set();
+  const length = partial.length;
+  for (const s of partial) {
+    if (addedSet.has(s)) {
+      continue;
+    }
+    addedSet.add(s);
+    const left = partial.replace(new RegExp(s, 'g'), '');
+    const disLength = length - left.length;
+    if (disLength > 1) {
+      results.push([s.repeat(2), left.padStart(length - 2, s)]);
+    }
+  }
+  return results;
+}

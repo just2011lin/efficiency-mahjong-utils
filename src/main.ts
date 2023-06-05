@@ -1,10 +1,11 @@
 import {
   flatmapTrileGroupTree,
+  splitOutDouble,
   splitPair,
   triplePairs,
 } from './utils/deal.util';
 
-import { isFace, isSequence } from './utils/is.util';
+import { isFace, isHule, isSequence } from './utils/is.util';
 import { TILE_TYPE } from './utils/type.util';
 
 /**
@@ -48,4 +49,4 @@ function createFaceObjs(cards: string) {
   return facedStrs;
 }
 
-analysePair('23s133m456789p11z');
+console.log(splitOutDouble('11133'));
