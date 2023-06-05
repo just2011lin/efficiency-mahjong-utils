@@ -38,6 +38,8 @@
 
 - 是否为边张搭子
 
+`function isEdgePartner(partial: string)`
+
 #### 三张牌的搭子
 
 - 对子复合型

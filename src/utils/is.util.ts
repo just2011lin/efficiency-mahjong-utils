@@ -104,3 +104,16 @@ export function isThresholdPartner(partial: string) {
   const [a, b] = partial;
   return Number(a) + 2 === Number(b) || Number(a) - 2 === Number(b);
 }
+
+/**
+ * 是否为边张搭子
+ * @param partial 部分牌，主要为两张
+ */
+export function isEdgePartner(partial: string) {
+  if (partial.length !== 2) {
+    return false;
+  }
+  return (
+    partial === '12' || partial === '21' || partial === '89' || partial === '98'
+  );
+}
