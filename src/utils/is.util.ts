@@ -41,9 +41,41 @@ export function isSequence(partial: string, type?: TILE_TYPE) {
  * @returns true表示这部分牌是一个刻子
  */
 export function isTriplet(partial: string) {
-  if (partial.length !== 3) {
-    return false;
+  return isPartialSame(partial, 3);
+}
+
+/**
+ * 判断是否是对子
+ * @param partial 部分牌
+ * @returns 是否是对子
+ */
+export function isPair(partial: string) {
+  return isPartialSame(partial, 2);
+}
+
+/**
+ * 是否是杠子
+ */
+export function isTick(partial: string) {
+  return isPartialSame(partial, 4);
+}
+
+/**
+ * 判断是否由几张相同的牌组成
+ * @param partial 部分牌
+ * @param size 数量
+ */
+function isPartialSame(partial: string, size: number) {
+  if (partial.length === size && size >= 2 && size <= 4) {
+    const a = partial[0];
+    let i = 1;
+    while (i < size) {
+      if (partial[i] !== a) {
+        return false;
+      }
+      i++;
+    }
+    return true;
   }
-  const [a, b, c] = partial;
-  return a === b && b === c;
+  return false;
 }

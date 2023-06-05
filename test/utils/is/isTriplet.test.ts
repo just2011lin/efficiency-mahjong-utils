@@ -9,9 +9,9 @@ describe('isTriplet,是否为刻子方法测试', () => {
     expect(isTriplet('11')).toBe(false);
   });
   test('1111不是一个刻子', () => {
-    expect(isTriplet('11')).toBe(false);
+    expect(isTriplet('1111')).toBe(false);
   });
   test('122不是一个刻子', () => {
-    expect(isTriplet('11')).toBe(false);
+    expect(isTriplet('122')).toBe(false);
   });
 });

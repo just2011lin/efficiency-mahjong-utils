@@ -12,11 +12,19 @@
 
 - 是否为刻字
 
-``
+`function isTriplet(partial: string)`
 
 - 是否为面子
 
+`function isFace(partial: string, type?: 'm' | 'p' | 's' | 'z')`
+
 - 是否为对子
+
+`function isPair(partial: string)`
+
+- 是否为杠子
+
+`function isTick(partial: string)`
 
 #### 两张牌搭子
 
