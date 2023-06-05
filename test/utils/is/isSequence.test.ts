@@ -1,7 +1,7 @@
-import { isSequence } from '../src/utils/is.util';
+import { isSequence } from '../../../src/utils/is.util';
 
 import { describe, expect, test } from '@jest/globals';
-import { TILE_TYPE } from '../src/utils/type.util';
+import { TILE_TYPE } from '../../../src/utils/type.util';
 
 describe('isSequence,是否为顺子方法测试', () => {
   test('123是一个顺子', () => {
