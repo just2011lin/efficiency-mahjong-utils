@@ -126,3 +126,49 @@ export function splitOutDouble(partial: string): Array<[string, string]> {
   }
   return results;
 }
+
+/**
+ * 从一副牌中拆出面子和剩余的牌
+ * @param parital 一副牌
+ * @param type 牌的类型
+ */
+export function splitOutFace(
+  parital: string,
+  type: TILE_TYPE,
+): Array<[string, string]> {
+  const results: Array<[string, string]> = [];
+  const addedNumSet: Set<string> = new Set();
+  const length = parital.length;
+  for (const s of parital) {
+    if (addedNumSet.has(s)) {
+      continue;
+    }
+    addedNumSet.add(s);
+    // 先考虑刻子的可能性
+    const tripletLeft = parital.replace(new RegExp(s, 'g'), '');
+    // 这说明有刻子
+    if (length - tripletLeft.length >= 3) {
+      results.push([s.repeat(3), tripletLeft.padStart(length - 3, s)]);
+    }
+    // 如果类型是字牌，则不需要考虑顺子的可能性
+    if (type === 'z') {
+      continue;
+    }
+    // 如果是数牌8或9则跳过
+    if (s === '8' || s === '9') {
+      continue;
+    }
+    // 找到s+1的下一个数
+    const nS = String(Number(s) + 1);
+    // 找到s+2的数
+    const nnS = String(Number(s) + 2);
+    if (parital.includes(nS) && parital.includes(nnS)) {
+      const sequenceLeft = parital
+        .replace(s, '')
+        .replace(nS, '')
+        .replace(nnS, '');
+      results.push([s + nS + nnS, sequenceLeft]);
+    }
+  }
+  return results;
+}

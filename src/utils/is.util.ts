@@ -1,11 +1,11 @@
-import { splitPair } from './deal.util';
+import { splitOutDouble, splitOutFace, splitPair } from './deal.util';
 import { TILE_TYPE } from './type.util';
 
 /**
  * 判断是否刚好是一组面子牌
  * @param partial 面子牌
  */
-export function isFace(partial: string, type?: TILE_TYPE): boolean {
+export function isFace(partial: string, type: TILE_TYPE): boolean {
   return isSequence(partial, type) || isTriplet(partial);
 }
 
@@ -17,7 +17,7 @@ export function isFace(partial: string, type?: TILE_TYPE): boolean {
  */
 export function isSequence(partial: string, type?: TILE_TYPE) {
   // 不能是字牌，张数要为3
-  if (type === TILE_TYPE.Z || partial.length !== 3) {
+  if (type === 'z' || partial.length !== 3) {
     return false;
   }
   // 取数
@@ -120,23 +120,51 @@ export function isEdgePartner(partial: string) {
 }
 
 /**
+ * 这些牌是否都组成了面子
+ * @param partial 部分牌
+ * @param type 牌的类型
+ */
+export function isAllFace(partial: string, type: TILE_TYPE): boolean {
+  if (partial.length % 3 !== 0) {
+    return false;
+  }
+  const splitedOutFaceResults = splitOutFace(partial, type);
+  return splitedOutFaceResults.some(([, left]) => {
+    return left === '' || isAllFace(left, type);
+  });
+}
+
+/**
  * 是否胡了
  * @param pair 一副牌（假设5张）
  */
 export function isHule(pair: string) {
   const splitedPair = splitPair(pair);
+  let headNum = 0;
   const res = Object.entries(splitedPair).every(([type, partial]) => {
-    if (partial.length === 0) {
+    const length = partial.length;
+    // 没有这个牌
+    if (length === 0) {
       return true;
-    } else if (partial.length === 2) {
+    }
+    // 一个对子
+    else if (length === 2) {
+      headNum++;
       return isDouble(partial);
-    } else if (partial.length === 3) {
-      return isFace(partial, type as TILE_TYPE);
-    } else if (partial.length === 5) {
-      // 暂不处理
-      return false;
+    }
+    // 对子 + n个面子
+    else if ((length - 2) % 3 == 0) {
+      headNum++;
+      const splitedOutDoubleResults = splitOutDouble(partial);
+      return splitedOutDoubleResults.some(([, left]) =>
+        isAllFace(left, type as TILE_TYPE),
+      );
+    }
+    // n个面子
+    else if (length % 3 === 0) {
+      return isAllFace(partial, type as TILE_TYPE);
     }
     return false;
   });
-  return res;
+  return headNum === 1 && res;
 }
