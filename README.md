@@ -68,4 +68,28 @@
 
 `function splitOutFace(partial: string, type: TILE_TYPE)`
 
-## 进张计算
+## 分析计算
+
+`src/utils/userful.util.ts`
+
+#### 进张计算
+
+- 获取两面型搭子的进张
+
+`function getUserfulTilesOfBothPartner(bothPartner: string)`
+
+- 获取坎张搭子的进张
+
+`function getUserfulTilesOfThresholdPartner(thresholdPartner: string)`
+
+- 获取边张搭子的进张
+
+`function getUserfulTilesOfEdgePartner(edgePartner: string)`
+
+- 获取搭子的所有进张
+
+`function getUserfulTilesOfPartner(partner: string)`
+
+- 在确定此牌已经听牌时，获取所有可胡的牌
+
+`functoin getUserfulTilesOfOneLeftPair(oneLeftPair: string)`

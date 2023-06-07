@@ -1,9 +1,3 @@
-import {
-  flatmapTrileGroupTree,
-  splitPair,
-  triplePairs,
-} from './utils/deal.util';
+import { getUserfulTilesOfOneLeftPair } from './utils/userful.util';
 
-import { isHule } from './utils/is.util';
-
-console.log(isHule('22m234z'));
+console.log(getUserfulTilesOfOneLeftPair('1112233467888m'));

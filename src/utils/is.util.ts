@@ -135,8 +135,8 @@ export function isAllFace(partial: string, type: TILE_TYPE): boolean {
 }
 
 /**
- * 是否胡了
- * @param pair 一副牌（假设5张）
+ * 是否胡了，判断标准为一个对子加零至多个面子
+ * @param pair 一副牌
  */
 export function isHule(pair: string) {
   const splitedPair = splitPair(pair);
