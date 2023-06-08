@@ -21,6 +21,15 @@ export function splitPair(pair: string) {
   return pairCards;
 }
 
+// 连接手牌，将拆分的手牌合并为字符串
+export function joinPair(splitedPair: ReturnType<typeof splitPair>) {
+  return Object.entries(splitedPair)
+    .map(([type, partial]) => {
+      return partial ? partial + type : '';
+    })
+    .join('');
+}
+
 /**
  * 将同种数牌或字牌，拆分为三个一组的全部可能性
  * @param samePair 不包含结尾的类型的1-9数字字符串
@@ -98,11 +107,24 @@ function getLeftStr(str: string, a: number, b: number, c: number) {
 }
 
 /**
- *
+ * 从一副牌中移除部分牌
  * @param partial 部分牌
- * @param sizeArr 拆分后每部分的数量，比如[2,3]表示拆分为两张和一个三张
+ * @param type 牌的类型
+ * @param pair 一副牌
  */
-// export function randomSplit(partial: string, sizeArr: number[]) {}
+export function removePartialFromPair(
+  partial: string,
+  type: TILE_TYPE,
+  pair: string,
+) {
+  const splitedPair = splitPair(pair);
+  let result = splitedPair[type];
+  for (const p of partial) {
+    result = result.replace(p, '');
+  }
+  splitedPair[type] = result;
+  return joinPair(splitedPair);
+}
 
 /**
  * 从一副牌中拆出对子和剩余的牌

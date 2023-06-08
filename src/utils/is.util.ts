@@ -1,4 +1,9 @@
-import { splitOutDouble, splitOutFace, splitPair } from './deal.util';
+import {
+  removePartialFromPair,
+  splitOutDouble,
+  splitOutFace,
+  splitPair,
+} from './deal.util';
 import { TILE_TYPE } from './type.util';
 
 /**
@@ -120,6 +125,20 @@ export function isEdgePartner(partial: string) {
 }
 
 /**
+ * 是否是两张牌组成的搭子
+ * 搭子的特点是两个数差值的绝对值为1或2
+ * @param partial 是否是搭子
+ */
+export function isPartnerOfTwoTiles(partial: string, type: TILE_TYPE) {
+  if (partial.length !== 2 && type !== 'z') {
+    return false;
+  }
+  const [a, b] = partial;
+  const diff = Math.abs(Number(a) - Number(b));
+  return diff === 1 || diff === 2;
+}
+
+/**
  * 这些牌是否都组成了面子
  * @param partial 部分牌
  * @param type 牌的类型
@@ -134,9 +153,65 @@ export function isAllFace(partial: string, type: TILE_TYPE): boolean {
   });
 }
 
+function isPartialToBeHu(partial: string, type: TILE_TYPE, pair: string) {
+  const length = partial.length;
+  if (length === 1) {
+    return isHule(pair + partial + type);
+  }
+  if (length === 2) {
+    // 是搭子或对子
+    if (isPartnerOfTwoTiles(partial, type as TILE_TYPE) || isDouble(partial)) {
+      // 此时，当移除这两个字符的剩余部分已经可以胡牌了，则说明这个牌是听牌了
+      return isHule(removePartialFromPair(partial, type, pair));
+    }
+    // 既不是搭子也不是对子，则还没有听牌
+    return false;
+  }
+  // 牌大于3张，则可以拆出一个面子来，看剩下来的牌是否能听牌
+  if (length > 3) {
+    const splitOutFaceResults = splitOutFace(partial, type);
+    if (
+      splitOutFaceResults.some(([face, left]) =>
+        isPartialToBeHu(left, type, removePartialFromPair(face, type, pair)),
+      )
+    ) {
+      return true;
+    }
+  }
+  // 4张牌的时候，有可能是双碰或对子+搭子的组合
+  if (length === 4) {
+    // 拆对子出来
+    const splitedOutDoubleResults = splitOutDouble(partial);
+    if (
+      splitedOutDoubleResults.some(
+        ([double, left]) =>
+          // 双碰听牌
+          isPartialToBeHu(double, type, pair) ||
+          // 对子+搭子
+          isPartialToBeHu(left, type, pair),
+      )
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * 判断是否已经听牌了
+ * @param pair 一副手牌（13张）
+ */
+export function isOneLeftToHu(pair: string) {
+  const splitedPair = splitPair(pair);
+  return ['m', 's', 'p', 'z'].some(type => {
+    const partial = splitedPair[type as TILE_TYPE] as string;
+    return isPartialToBeHu(partial, type as TILE_TYPE, pair);
+  });
+}
+
 /**
  * 是否胡了，判断标准为一个对子加零至多个面子
- * @param pair 一副牌
+ * @param pair 一副牌（标准14张）
  */
 export function isHule(pair: string) {
   const splitedPair = splitPair(pair);

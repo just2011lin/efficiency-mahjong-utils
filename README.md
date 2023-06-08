@@ -30,9 +30,13 @@
 
 `function isAllFace(partial: string, type: TILE_TYPE)`
 
-- 一副牌是否胡了，无张数限制，满足一雀头加 0 至多个面子即可
+- 一副牌(14张)是否胡了，无张数限制，满足一雀头加 0 至多个面子即可
 
-`function isHule(partial: string)`
+`function isHule(pair: string)`
+
+- 一副牌(13张)是否听牌了
+
+`function isOneLeftToHu(pair: string)`
 
 #### 两张牌搭子
 
@@ -59,6 +63,8 @@
 - 是否为搭子（对子也算是搭子的一种）
 
 ## 数字处理
+
+`src/utils/deal.util.ts`
 
 - 从一组数中拆出一个对子和剩余的内容（所有组合）
 
@@ -89,6 +95,8 @@
 - 获取搭子的所有进张
 
 `function getUserfulTilesOfPartner(partner: string)`
+
+#### 可胡牌计算
 
 - 在确定此牌已经听牌时，获取所有可胡的牌
 
