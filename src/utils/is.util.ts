@@ -1,7 +1,9 @@
 import {
+  joinPair,
   removePartialFromPair,
   splitOutDouble,
   splitOutFace,
+  splitOutFaceOfPair,
   splitPair,
 } from './deal.util';
 import { TILE_TYPE } from './type.util';
