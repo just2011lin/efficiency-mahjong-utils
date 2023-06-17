@@ -123,13 +123,25 @@ export function splitOutFace(
  * 移除一副牌中的一个面子，返回所有可能结果
  * @param pair 一副牌
  */
-export function splitOutFaceOfPair(pair: string): string[] {
-  const result: string[] = [];
+export function splitOutFaceOfPair(pair: string): string[][] {
+  const result: string[][] = [];
   const splitedPair = splitPair(pair);
   Object.entries(splitedPair).map(([type, partial]) => {
     const splitOutFaceResult = splitOutFace(partial, type as TILE_TYPE);
-    splitOutFaceResult.forEach(([, left]) => {
-      result.push(joinPair({ ...splitedPair, [type]: left }));
+    splitOutFaceResult.forEach(([face, left]) => {
+      result.push([face + type, joinPair({ ...splitedPair, [type]: left })]);
+    });
+  });
+  return result;
+}
+
+export function splitOutDoubleOfPair(pair: string): string[][] {
+  const result: string[][] = [];
+  const splitedPair = splitPair(pair);
+  Object.entries(splitedPair).map(([type, partial]) => {
+    const splitOutDoubleResult = splitOutDouble(partial);
+    splitOutDoubleResult.forEach(([double, left]) => {
+      result.push([double + type, joinPair({ ...splitedPair, [type]: left })]);
     });
   });
   return result;

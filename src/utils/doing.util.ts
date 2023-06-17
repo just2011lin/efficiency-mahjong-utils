@@ -1,25 +1,83 @@
-import { splitOutFaceOfPair } from './deal.util';
+import Pair from '../model/Pair';
+import { splitOutDoubleOfPair, splitOutFaceOfPair } from './deal.util';
+import { uniqWith, cloneDeep } from 'lodash';
 
-/**
- * 是否为一向听的牌
- * @param pair 一副牌13张
- */
-export function isTwoLeftToHu(pair: string) {
-  // 分析：
-  // 一向听的意思就是说，一共要组成五个部分，然后有两个部分未能成形
-  // 有以下三种可能性：
-  // 1、两面一对两搭：两个面子+两个搭子+一个对子+一张要打出的牌
-  // 2、三面一搭：三个面子+一个搭子+两个单张
-  // 3、三面一对：有三个面子+对子，少一个搭子
-  // ---------------------------------------------------------
-  // 不管怎么说，可以先考虑移除两个面子后再做判断（可能有多种情况）
-  // 判断剩下的牌是否可以再移除面子，如果可以，则说明是情况2
-  const oneFaceRemovedPairs: string[] = splitOutFaceOfPair(pair);
-  const twoFaceRemovedPairs: string[] = [];
-  oneFaceRemovedPairs.forEach(oneFaceRemovedPair => {
-    twoFaceRemovedPairs.push(...splitOutFaceOfPair(oneFaceRemovedPair));
+export function makeSplitFacePairTree(pairParent: Pair) {
+  const splitOutFaceOfPairResult = splitOutFaceOfPair(pairParent.left);
+  const children: Pair[] = [];
+  splitOutFaceOfPairResult.forEach(([face, left]) => {
+    const child = cloneDeep(pairParent);
+    child.left = left;
+    child.splitedFaces.push(face);
+    makeSplitFacePairTree(child);
+    children.push(child);
   });
-  console.log('twoFaceRemovedPairs', twoFaceRemovedPairs);
-  // 判断有没有对子，如果有对子，则表明是情况1和3，没有对子则只可能是情况2
-  // return twoFaceRemovedPairs.some(pair => {});
+  pairParent.children = children;
+  return pairParent;
+}
+
+export function getPairTreeBottomChildren(pair: Pair, pairs: Pair[] = []) {
+  if (pair.children.length === 0) {
+    pairs.push(pair);
+  } else {
+    for (const child of pair.children) {
+      getPairTreeBottomChildren(child, pairs);
+    }
+  }
+  return pairs;
+}
+
+export function isPairEqual(aPair: Pair, bPair: Pair): boolean {
+  /** 如果left不相同则不一样 */
+  if (aPair.left !== bPair.left) {
+    return false;
+  }
+  const aSplitedFaces = aPair.splitedFaces;
+  const bSplitedFaces = bPair.splitedFaces;
+  // 如果提取出来的面子数量不一致，则不相等
+  if (aSplitedFaces.length !== bSplitedFaces.length) {
+    return false;
+  }
+  // a和b放在一起进行去重之后数量与原来一致，则说明a、b中的面子是一样的
+  if (
+    new Set([...aSplitedFaces, ...bSplitedFaces]).size !== aSplitedFaces.length
+  ) {
+    return false;
+  }
+  // 不用判断对子部分是否相同
+  // 因为拆对子的方式是固定的，只要别的部分是相同的，对子拆出来也总是相同的
+  return true;
+}
+
+export function makeSplitDoublePairTree(pairParent: Pair) {
+  const splitOutDouleOfPairResult = splitOutDoubleOfPair(pairParent.left);
+  const children: Pair[] = [];
+
+  splitOutDouleOfPairResult.forEach(([double, left]) => {
+    const child = cloneDeep(pairParent);
+    child.left = left;
+    child.splitedDoubles.push(double);
+    children.push(child);
+    makeSplitDoublePairTree(child);
+  });
+
+  pairParent.children = children;
+
+  return pairParent;
+}
+
+export function getAnalyseResult(pair: string) {
+  const pairRoot = makeSplitFacePairTree(new Pair(pair));
+
+  const result = getPairTreeBottomChildren(pairRoot);
+  // 拆出对子后的结果
+  const resultB: Pair[] = [];
+  // 拆对子
+  result.forEach(rPair => {
+    const pairRoot = makeSplitDoublePairTree(rPair);
+    const result = getPairTreeBottomChildren(pairRoot);
+    resultB.push(...result);
+  });
+
+  return uniqWith(resultB, isPairEqual);
 }
