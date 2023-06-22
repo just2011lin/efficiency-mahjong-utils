@@ -1,247 +1,151 @@
-import {
-  joinPair,
-  removePartialFromPair,
-  splitOutDouble,
-  splitOutFace,
-  splitOutFaceOfPair,
-  splitPair,
-} from './deal.util';
-import { TILE_TYPE } from './type.util';
+import { getAnalyseResult } from './analyse.util';
+import { getSrotedNumArray, isSizeDigits } from './script.util';
+import { splitTiles } from './split.util';
+import { NUM_TYPES, TYPES, WORD_TYPE } from './type.util';
+
+/**
+ * 类型字符是正确的
+ * @param type 类型字符
+ */
+export function isType(type: string) {
+  return TYPES.includes(type);
+}
+
+/**
+ * 类型字符是数牌类型
+ * @param type 类型字符
+ */
+export function isNumType(type: string) {
+  return NUM_TYPES.includes(type);
+}
+
+/**
+ * 类型字符是字牌类型
+ * @param type 类型字符
+ */
+export function isWordType(type: string) {
+  return WORD_TYPE === type;
+}
 
 /**
  * 判断是否刚好是一组面子牌
- * @param partial 面子牌
+ * @param tiles 数张同类型的牌
  */
-export function isFace(partial: string, type: TILE_TYPE): boolean {
-  return isSequence(partial, type) || isTriplet(partial);
+export function isFace(tiles: string): boolean {
+  return isSequence(tiles) || isTriplet(tiles);
 }
 
 /**
  * 判断部分牌是不是一个顺子
- * @param partial 部分牌
- * @param type 牌的类型
+ * @param tiles 数张同类型的牌
  * @returns true表示这部分牌是一个顺子
  */
-export function isSequence(partial: string, type?: TILE_TYPE) {
+export function isSequence(tiles: string) {
+  const [digits, type] = splitTiles(tiles);
   // 不能是字牌，张数要为3
-  if (type === 'z' || partial.length !== 3) {
+  if (!isNumType(type) || digits.length !== 3) {
     return false;
   }
   // 取数
-  let [a, b, c] = partial.split('').map(Number);
-  // 大小交换
-  if (a > b) {
-    [a, b] = [b, a];
-  }
-  if (b > c) {
-    [b, c] = [c, b];
-  }
-  if (a > b) {
-    [a, b] = [b, a];
-  }
+  const [a, b, c] = getSrotedNumArray(digits);
   return a + 1 === b && b + 1 === c;
 }
 
 /**
  * 判断部分牌是不是一个刻子
- * @param partial 部分牌
- * @param type 牌的配型
+ * @param tiles 数张同类型的牌
  * @returns true表示这部分牌是一个刻子
  */
-export function isTriplet(partial: string) {
-  return isPartialSame(partial, 3);
+export function isTriplet(tiles: string) {
+  const [digits, type] = splitTiles(tiles);
+  return isType(type) && isSizeDigits(digits, 3);
 }
 
 /**
  * 判断是否是对子
- * @param partial 部分牌
+ * @param tiles 数张同类型的牌
  * @returns 是否是对子
  */
-export function isDouble(partial: string) {
-  return isPartialSame(partial, 2);
+export function isDouble(tiles: string) {
+  const [digits, type] = splitTiles(tiles);
+  return isType(type) && isSizeDigits(digits, 2);
 }
 
 /**
  * 是否是杠子
+ * @param tiles 数张同类型的牌
+ * @returns true表示为杠子
  */
-export function isFourfold(partial: string) {
-  return isPartialSame(partial, 4);
-}
-
-/**
- * 判断是否由几张相同的牌组成
- * @param partial 部分牌
- * @param size 数量
- */
-function isPartialSame(partial: string, size: number) {
-  if (partial.length === size && size >= 2 && size <= 4) {
-    const a = partial[0];
-    let i = 1;
-    while (i < size) {
-      if (partial[i] !== a) {
-        return false;
-      }
-      i++;
-    }
-    return true;
-  }
-  return false;
+export function isFourfold(tiles: string) {
+  const [digits, type] = splitTiles(tiles);
+  return isType(type) && isSizeDigits(digits, 4);
 }
 
 /**
  * 是否为两面搭子
- * @param partial 部分牌，主要为两张
+ * @param tiles 数张同类型的牌
  */
-export function isBothPartner(partial: string) {
-  if (partial.length !== 2) {
+export function isBoth(tiles: string) {
+  const [digits, type] = splitTiles(tiles);
+  if (digits.length !== 2 || !isNumType(type)) {
     return false;
   }
-  const [a, b] = partial;
-  const res = Number(a) + 1 === Number(b) || Number(a) - 1 === Number(b);
-  return res && a !== '1' && b !== '1' && a !== '9' && b !== '9';
+  const [a, b] = getSrotedNumArray(digits);
+  return a + 1 === b && a !== 1 && a !== 8;
 }
 
 /**
  * 是否为坎张搭子
- * @param partial 部分牌，主要为两张
+ * @param tiles 数张同类型的牌
  */
-export function isThresholdPartner(partial: string) {
-  if (partial.length !== 2) {
+export function isThreshold(tiles: string) {
+  const [digits, type] = splitTiles(tiles);
+  if (digits.length !== 2 || !isNumType(type)) {
     return false;
   }
-  const [a, b] = partial;
-  return Number(a) + 2 === Number(b) || Number(a) - 2 === Number(b);
+  const [a, b] = getSrotedNumArray(digits);
+  return a + 2 === b;
 }
 
 /**
  * 是否为边张搭子
- * @param partial 部分牌，主要为两张
+ * @param tiles 数张同类型的牌
  */
-export function isEdgePartner(partial: string) {
-  if (partial.length !== 2) {
+export function isEdge(tiles: string) {
+  const [digits, type] = splitTiles(tiles);
+  if (digits.length !== 2 || !isNumType(type)) {
     return false;
   }
-  return (
-    partial === '12' || partial === '21' || partial === '89' || partial === '98'
-  );
+  return ['12', '21', '89', '98'].includes(digits);
 }
 
 /**
  * 是否是两张牌组成的搭子
  * 搭子的特点是两个数差值的绝对值为1或2
- * @param partial 是否是搭子
+ * @param tiles 数张同类型的牌
  */
-export function isPartnerOfTwoTiles(partial: string, type: TILE_TYPE) {
-  if (partial.length !== 2 && type !== 'z') {
+export function isPartner(tiles: string) {
+  const [digits, type] = splitTiles(tiles);
+  if (digits.length !== 2 || !isNumType(type)) {
     return false;
   }
-  const [a, b] = partial;
-  const diff = Math.abs(Number(a) - Number(b));
-  return diff === 1 || diff === 2;
-}
-
-/**
- * 这些牌是否都组成了面子
- * @param partial 部分牌
- * @param type 牌的类型
- */
-export function isAllFace(partial: string, type: TILE_TYPE): boolean {
-  if (partial.length % 3 !== 0) {
-    return false;
-  }
-  const splitedOutFaceResults = splitOutFace(partial, type);
-  return splitedOutFaceResults.some(([, left]) => {
-    return left === '' || isAllFace(left, type);
-  });
-}
-
-function isPartialToBeHu(partial: string, type: TILE_TYPE, pair: string) {
-  const length = partial.length;
-  if (length === 1) {
-    return isHule(pair + partial + type);
-  }
-  if (length === 2) {
-    // 是搭子或对子
-    if (isPartnerOfTwoTiles(partial, type as TILE_TYPE) || isDouble(partial)) {
-      // 此时，当移除这两个字符的剩余部分已经可以胡牌了，则说明这个牌是听牌了
-      return isHule(removePartialFromPair(partial, type, pair));
-    }
-    // 既不是搭子也不是对子，则还没有听牌
-    return false;
-  }
-  // 牌大于3张，则可以拆出一个面子来，看剩下来的牌是否能听牌
-  if (length > 3) {
-    const splitOutFaceResults = splitOutFace(partial, type);
-    if (
-      splitOutFaceResults.some(([face, left]) =>
-        isPartialToBeHu(left, type, removePartialFromPair(face, type, pair)),
-      )
-    ) {
-      return true;
-    }
-  }
-  // 4张牌的时候，有可能是双碰或对子+搭子的组合
-  if (length === 4) {
-    // 拆对子出来
-    const splitedOutDoubleResults = splitOutDouble(partial);
-    if (
-      splitedOutDoubleResults.some(
-        ([double, left]) =>
-          // 双碰听牌
-          isPartialToBeHu(double, type, pair) ||
-          // 对子+搭子
-          isPartialToBeHu(left, type, pair),
-      )
-    ) {
-      return true;
-    }
-  }
-  return false;
+  const [a, b] = getSrotedNumArray(digits);
+  return a + 1 === b || a + 2 === b;
 }
 
 /**
  * 判断是否已经听牌了
- * @param pair 一副手牌（13张）
+ * @param tiles 一副手牌
  */
-export function isOneLeftToHu(pair: string) {
-  const splitedPair = splitPair(pair);
-  return ['m', 's', 'p', 'z'].some(type => {
-    const partial = splitedPair[type as TILE_TYPE] as string;
-    return isPartialToBeHu(partial, type as TILE_TYPE, pair);
-  });
+export function isReady(tiles: string) {
+  return getAnalyseResult(tiles).some(p => p.isReady());
 }
 
 /**
- * 是否胡了，判断标准为一个对子加零至多个面子
- * @param pair 一副牌（标准14张）
+ * 是否胡了(暂只考虑一般型)
+ * @param tiles 一副手牌+胡牌
  */
-export function isHule(pair: string) {
-  const splitedPair = splitPair(pair);
-  let headNum = 0;
-  const res = Object.entries(splitedPair).every(([type, partial]) => {
-    const length = partial.length;
-    // 没有这个牌
-    if (length === 0) {
-      return true;
-    }
-    // 一个对子
-    else if (length === 2) {
-      headNum++;
-      return isDouble(partial);
-    }
-    // 对子 + n个面子
-    else if ((length - 2) % 3 == 0) {
-      headNum++;
-      const splitedOutDoubleResults = splitOutDouble(partial);
-      return splitedOutDoubleResults.some(([, left]) =>
-        isAllFace(left, type as TILE_TYPE),
-      );
-    }
-    // n个面子
-    else if (length % 3 === 0) {
-      return isAllFace(partial, type as TILE_TYPE);
-    }
-    return false;
-  });
-  return headNum === 1 && res;
+export function isSuceess(tiles: string) {
+  // 使用Pair对象分析此代码
+  return getAnalyseResult(tiles).some(r => r.isSucess());
 }
