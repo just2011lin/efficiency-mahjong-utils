@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "麻将牌效辅助方法",
   "keywords": ["mahjong"],
-  "main": "src/main.ts",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
     "start": "vite",
@@ -34,5 +34,6 @@
     "type": "git",
     "url": "https://github.com/just2011lin/efficiency-mahjong-utils"
   },
-  "homepage": "https://github.com/just2011lin/efficiency-mahjong-utils#readme"
+  "homepage": "https://github.com/just2011lin/efficiency-mahjong-utils#readme",
+  "files": ["src"]
 }

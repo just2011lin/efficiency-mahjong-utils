@@ -1,4 +1,4 @@
-import { isSequence } from '../../../src/utils/is.util';
+import { isSequence } from '../../../src';
 
 import { describe, expect, test } from '@jest/globals';
 

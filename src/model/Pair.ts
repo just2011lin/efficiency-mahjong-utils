@@ -3,7 +3,7 @@ import { getMatchesOfPartner } from '../utils/match.util';
 /**
  * 一副牌的信息
  */
-export default class Pair {
+export class Pair {
   /**
    * 完整的牌
    */

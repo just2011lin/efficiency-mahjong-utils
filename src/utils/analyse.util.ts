@@ -1,4 +1,4 @@
-import Pair from '../model/Pair';
+import {Pair} from '../model/Pair';
 import {
   splitOutPartnerOfPair,
   splitOutDoubleOfPair,

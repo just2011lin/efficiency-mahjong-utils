@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { isReady } from '../../../src/utils/is.util';
+import { isReady } from '../../../src';
 
 describe('isReady,判断一副牌是否听牌了', () => {
   test('44789p111678s77z听牌了', () => {

@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { isBoth } from '../../../src/utils/is.util';
+import { isBoth } from '../../../src';
 
 describe('isBoth,是否为两面搭子方法测试', () => {
   test('23s是一个两面搭子', () => {

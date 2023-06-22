@@ -1,4 +1,4 @@
-import { isDouble } from '../../../src/utils/is.util';
+import { isDouble } from '../../../src';
 
 import { describe, expect, test } from '@jest/globals';
 

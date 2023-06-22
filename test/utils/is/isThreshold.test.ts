@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { isThreshold } from '../../../src/utils/is.util';
+import { isThreshold } from '../../../src';
 
 describe('isThreshold,是否为坎张搭子方法测试', () => {
   test('13m是一个坎张搭子', () => {

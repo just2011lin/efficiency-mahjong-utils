@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { isEdge } from '../../../src/utils/is.util';
+import { isEdge } from '../../../src';
 
 describe('isEdge,是否为边张搭子方法测试', () => {
   test('12s是一个边张搭子', () => {
