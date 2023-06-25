@@ -51,8 +51,8 @@ function isPairEqual(aPair: PairNode, bPair: PairNode): boolean {
   if (aPair.left !== bPair.left) {
     return false;
   }
-  const aSplitedFaces = aPair.splitedFaces;
-  const bSplitedFaces = bPair.splitedFaces;
+  const aSplitedFaces = aPair.faces;
+  const bSplitedFaces = bPair.faces;
   // 如果提取出来的面子数量不一致，则不相等
   if (aSplitedFaces.length !== bSplitedFaces.length) {
     return false;
@@ -72,9 +72,9 @@ export function getAnalyseResult(pair: string) {
   let lastResult = [new PairNode(pair)];
 
   const splitMethods: [keyof PairNode, (pair: string) => string[][]][] = [
-    ['splitedFaces', splitOutFaceOfPair],
-    ['splitedDoubles', splitOutDoubleOfPair],
-    ['splitedPartners', splitOutPartnerOfPair],
+    ['faces', splitOutFaceOfPair],
+    ['doubles', splitOutDoubleOfPair],
+    ['partners', splitOutPartnerOfPair],
   ];
 
   for (const [key, fn] of splitMethods) {
@@ -91,7 +91,7 @@ export function getAnalyseResult(pair: string) {
 
   // 拆分单张
   uniqResult.forEach(rPair => {
-    rPair.splitedSingles = splitSingles(rPair.left);
+    rPair.singles = splitSingles(rPair.left);
     rPair.left = '';
   });
 

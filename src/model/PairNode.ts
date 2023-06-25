@@ -19,19 +19,19 @@ export class PairNode {
   /**
    * 一副牌中可以拆出来的面子
    */
-  splitedFaces: string[] = [];
+  faces: string[] = [];
   /**
    * 一副牌中可以拆出来的对子
    */
-  splitedDoubles: string[] = [];
+  doubles: string[] = [];
   /**
    * 一副牌中可以拆出来的搭子
    */
-  splitedPartners: string[] = [];
+  partners: string[] = [];
   /**
    * 单张
    */
-  splitedSingles: string[] = [];
+  singles: string[] = [];
 
   /**
    * 子Pair
@@ -52,20 +52,20 @@ export class PairNode {
   isReady() {
     const {
       left,
-      splitedFaces,
-      splitedPartners,
-      splitedSingles,
-      splitedDoubles,
+      faces,
+      partners,
+      singles,
+      doubles,
     } = this;
     // 不能有剩余牌未被分解
     if (left !== '') {
       return;
     }
     // 听牌的几种形式：单骑听、搭子（边张、坎张、两面）、双碰
-    const singleLength = splitedSingles.length;
-    const doubleLength = splitedDoubles.length;
-    const faceLength = splitedFaces.length;
-    const partnerLength = splitedPartners.length;
+    const singleLength = singles.length;
+    const doubleLength = doubles.length;
+    const faceLength = faces.length;
+    const partnerLength = partners.length;
     // 先校验比较常见的搭子听牌
     if (singleLength === 0 && doubleLength === 1 && partnerLength === 1) {
       return true;
@@ -92,17 +92,17 @@ export class PairNode {
   isSucess() {
     const {
       left,
-      splitedFaces,
-      splitedPartners,
-      splitedSingles,
-      splitedDoubles,
+      faces,
+      partners,
+      singles,
+      doubles,
     } = this;
     return (
       left === '' &&
-      splitedPartners.length === 0 &&
-      splitedSingles.length === 0 &&
-      splitedDoubles.length === 1 &&
-      splitedFaces.length > 0
+      partners.length === 0 &&
+      singles.length === 0 &&
+      doubles.length === 1 &&
+      faces.length > 0
     );
   }
 
@@ -113,15 +113,15 @@ export class PairNode {
   getMatchesOfSuccess() {
     const result: string[] = [];
     if (this.isReady()) {
-      const { splitedSingles, splitedDoubles, splitedPartners } = this;
-      if (splitedSingles[0]) {
-        result.push(splitedSingles[0]);
-      } else if (splitedDoubles.length === 2) {
-        const [one, two] = splitedDoubles;
+      const { singles, doubles, partners } = this;
+      if (singles[0]) {
+        result.push(singles[0]);
+      } else if (doubles.length === 2) {
+        const [one, two] = doubles;
         result.push(one.slice(1));
         result.push(two.slice(1));
-      } else if (splitedPartners[0]) {
-        result.push(...getMatchesOfPartner(splitedPartners[0]));
+      } else if (partners[0]) {
+        result.push(...getMatchesOfPartner(partners[0]));
       }
     }
     return result;
@@ -133,15 +133,15 @@ export class PairNode {
    * @returns 这副牌进入听牌最少需要的进张数
    */
   getMatchNumOfReady() {
-    const { splitedFaces, splitedDoubles, splitedPartners } = this;
+    const { faces, doubles, partners } = this;
     // 向听数计算的基数
     const base = Math.floor(this.size / 3);
-    const fix = splitedFaces.length + splitedPartners.length - base;
+    const fix = faces.length + partners.length - base;
     return (
       base * 2 -
-      splitedFaces.length * 2 -
-      splitedDoubles.length -
-      splitedPartners.length + (fix > 0 ? fix: 0)
+      faces.length * 2 -
+      doubles.length -
+      partners.length + (fix > 0 ? fix: 0)
     );
   }
 }
