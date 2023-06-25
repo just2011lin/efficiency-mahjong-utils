@@ -1,107 +1,22 @@
 # efficiency-mahjong-utils
 
-科学麻将牌效计算的工具方法
+麻将牌效计算的工具方法
 
-## 是否计算
+## 牌种类描述说明
 
-`src/utils/is.util.ts`
+`s`表示索子，`m`表示万子，`p`表示饼子，`z`表示`东南西北白发中`
 
-- 是否为顺子
+## 常见英文词说明
 
-`function isSequence(partial: string, type?: TILE_TYPE)`
-
-- 是否为刻字
-
-`function isTriplet(partial: string)`
-
-- 是否为面子
-
-`function isFace(partial: string, type?: TILE_TYPE)`
-
-- 是否为对子
-
-`function isDouble(partial: string)`
-
-- 是否为杠子
-
-`function isFourfold(partial: string)`
-
-- 这些牌是否都组成了面子
-
-`function isAllFace(partial: string, type: TILE_TYPE)`
-
-- 一副牌(14张)是否胡了，无张数限制，满足一雀头加 0 至多个面子即可
-
-`function isHule(pair: string)`
-
-- 一副牌(13张)是否听牌了
-
-`function isOneLeftToHu(pair: string)`
-
-#### 两张牌搭子
-
-- 是否为两面搭子
-
-`function isBothPartner(partial: string)`
-
-- 是否为坎张搭子
-
-`function isThresholdPartner(partial: string)`
-
-- 是否为边张搭子
-
-`function isEdgePartner(partial: string)`
-
-#### 三张牌的搭子
-
-- 对子复合型
-
-- 两坎型
-
-#### 四张牌复合型
-
-- 是否为搭子（对子也算是搭子的一种）
-
-#### 向听数
-
-- 是否为一向听的牌
-
-## 数字处理
-
-`src/utils/deal.util.ts`
-
-- 从一组数中拆出一个对子和剩余的内容（所有组合）
-
-`function splitOutDouble(partial: string)`
-
-- 从一组数中拆出一个面子和剩余的内容（所有组合）
-
-`function splitOutFace(partial: string, type: TILE_TYPE)`
-
-## 分析计算
-
-`src/utils/userful.util.ts`
-
-#### 进张计算
-
-- 获取两面型搭子的进张
-
-`function getUserfulTilesOfBothPartner(bothPartner: string)`
-
-- 获取坎张搭子的进张
-
-`function getUserfulTilesOfThresholdPartner(thresholdPartner: string)`
-
-- 获取边张搭子的进张
-
-`function getUserfulTilesOfEdgePartner(edgePartner: string)`
-
-- 获取搭子的所有进张
-
-`function getUserfulTilesOfPartner(partner: string)`
-
-#### 可胡牌计算
-
-- 在确定此牌已经听牌时，获取所有可胡的牌
-
-`functoin getUserfulTilesOfOneLeftPair(oneLeftPair: string)`
+| 英文      | 描述                      |示例       |
+| ---       | ---                       | ---    |
+| tile      | 带类型的一张牌             | 1s       |
+| digits    | 连续无序的数字字符串        | 2517    |
+| tiles     | 带类型的一副牌（数量不限） | 456s2p3m77z |
+| sequence  | 顺子                      | 234s      |
+| triplet   | 刻子                      | 333z      |
+| face      | 面子                      | 234s      |
+| double    | 对子                      | 55s       |
+| fourfold  | 杠子                      | 1111z     |
+| ready     | 表示听牌了                | 34s22z    |
+| oneLeft   | 表示一向听                | 36s22z    |
