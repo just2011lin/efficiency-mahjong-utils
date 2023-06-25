@@ -1,4 +1,4 @@
-import {Pair} from '../model/Pair';
+import { PairNode } from '../model/PairNode';
 import {
   splitOutPartnerOfPair,
   splitOutDoubleOfPair,
@@ -7,13 +7,20 @@ import {
 import { uniqWith, cloneDeep } from 'lodash';
 import { splitSingles } from './split.util';
 
+/**
+ * 拆出一副手牌中的面子、对子、搭子和单张，并形成树形结构
+ * @param pairParent Pair实例
+ * @param name 拆出部分的key明
+ * @param splitFn 拆分方法
+ * @returns Pair实例
+ */
 function makeSplitPairTree(
-  pairParent: Pair,
-  name: keyof Pair,
+  pairParent: PairNode,
+  name: keyof PairNode,
   splitFn: (pair: string) => string[][],
 ) {
   const splitOutOfPairResult = splitFn(pairParent.left);
-  const children: Pair[] = [];
+  const children: PairNode[] = [];
   splitOutOfPairResult.forEach(([face, left]) => {
     const child = cloneDeep(pairParent);
     child.left = left;
@@ -28,7 +35,7 @@ function makeSplitPairTree(
   return pairParent;
 }
 
-function getPairTreeBottomChildren(pair: Pair, pairs: Pair[] = []) {
+function getPairTreeBottomChildren(pair: PairNode, pairs: PairNode[] = []) {
   if (pair.children.length === 0) {
     pairs.push(pair);
   } else {
@@ -39,7 +46,7 @@ function getPairTreeBottomChildren(pair: Pair, pairs: Pair[] = []) {
   return pairs;
 }
 
-function isPairEqual(aPair: Pair, bPair: Pair): boolean {
+function isPairEqual(aPair: PairNode, bPair: PairNode): boolean {
   /** 如果left不相同则不一样 */
   if (aPair.left !== bPair.left) {
     return false;
@@ -62,16 +69,16 @@ function isPairEqual(aPair: Pair, bPair: Pair): boolean {
 }
 
 export function getAnalyseResult(pair: string) {
-  let lastResult = [new Pair(pair)];
+  let lastResult = [new PairNode(pair)];
 
-  const splitMethods: [keyof Pair, (pair: string) => string[][]][] = [
+  const splitMethods: [keyof PairNode, (pair: string) => string[][]][] = [
     ['splitedFaces', splitOutFaceOfPair],
     ['splitedDoubles', splitOutDoubleOfPair],
     ['splitedPartners', splitOutPartnerOfPair],
   ];
 
   for (const [key, fn] of splitMethods) {
-    const result: Pair[] = [];
+    const result: PairNode[] = [];
     lastResult.forEach(rPair => {
       const pairRoot = makeSplitPairTree(rPair, key, fn);
       const children = getPairTreeBottomChildren(pairRoot);

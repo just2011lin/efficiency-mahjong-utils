@@ -3,7 +3,7 @@ import { getMatchesOfPartner } from '../utils/match.util';
 /**
  * 一副牌的信息
  */
-export class Pair {
+export class PairNode {
   /**
    * 完整的牌
    */
@@ -36,7 +36,7 @@ export class Pair {
   /**
    * 子Pair
    */
-  children: Pair[] = [];
+  children: PairNode[] = [];
 
   constructor(pair: string) {
     if (pair) {

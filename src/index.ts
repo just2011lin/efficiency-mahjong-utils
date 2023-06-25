@@ -1,5 +1,5 @@
 
-export * from './model/Pair'
+export * from './model/PairNode'
 export * from './utils/analyse.util'
 export * from './utils/create.tuil'
 export * from './utils/deal.util'
