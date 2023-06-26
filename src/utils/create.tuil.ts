@@ -1,4 +1,4 @@
-import { random } from 'lodash';
+import random from 'lodash/random';
 
 function createCodeStr(key: string): string {
   const nums = key.split('').map(s => s.charCodeAt(0));

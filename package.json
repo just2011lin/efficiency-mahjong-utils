@@ -1,12 +1,13 @@
 {
   "name": "efficiency-mahjong-utils",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "麻将牌效辅助方法",
   "keywords": ["mahjong"],
   "main": "src/index.ts",
   "type": "module",
   "scripts": {
     "start": "vite",
+    "build": "vite build",
     "test": "jest",
     "lint": "eslint --ext .js,.ts src/"
   },
@@ -35,5 +36,5 @@
     "url": "https://github.com/just2011lin/efficiency-mahjong-utils"
   },
   "homepage": "https://github.com/just2011lin/efficiency-mahjong-utils#readme",
-  "files": ["src"]
+  "files": ["src", "miniprogram_dist"]
 }

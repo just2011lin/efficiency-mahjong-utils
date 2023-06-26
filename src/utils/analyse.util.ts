@@ -4,7 +4,8 @@ import {
   splitOutDoubleOfPair,
   splitOutFaceOfPair,
 } from './deal.util';
-import { uniqWith, cloneDeep } from 'lodash';
+import uniqWith from 'lodash/uniqWith';
+import cloneDeep from 'lodash/cloneDeep';
 import { splitSingles } from './split.util';
 
 /**
