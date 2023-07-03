@@ -5,7 +5,6 @@ import {
   splitOutFaceOfPair,
 } from './deal.util';
 import uniqWith from 'lodash/uniqWith';
-import cloneDeep from 'lodash/cloneDeep';
 import { splitSingles } from './split.util';
 
 /**
@@ -23,7 +22,7 @@ function makeSplitPairTree(
   const splitOutOfPairResult = splitFn(pairParent.left);
   const children: PairNode[] = [];
   splitOutOfPairResult.forEach(([face, left]) => {
-    const child = cloneDeep(pairParent);
+    const child = pairParent.clone();
     child.left = left;
     const values = child[name] as string[];
     if (Array.isArray(values)) {

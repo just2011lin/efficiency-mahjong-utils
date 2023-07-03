@@ -141,7 +141,20 @@ export class PairNode {
       base * 2 -
       faces.length * 2 -
       doubles.length -
-      partners.length + (fix > 0 ? fix: 0)
+      partners.length + (fix > 0 ? fix : 0)
     );
+  }
+
+  /**
+   * 复制一份节点
+   */
+  clone() {
+    const p = new PairNode(this.full);
+    p.left = this.left;
+    p.faces = Array.from(this.faces);
+    p.doubles = Array.from(this.doubles);
+    p.partners = Array.from(this.partners);
+    p.singles = Array.from(this.singles);
+    return p;
   }
 }

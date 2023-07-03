@@ -28,3 +28,14 @@ export function getSrotedNumArray(digits: string) {
     .map(Number)
     .sort((a, b) => a - b);
 }
+
+/**
+ * 获取一个随机数
+ * @param start 起始数（包含）
+ * @param end 结束数（包含）
+ * @returns 随机数
+ */
+export function random(start: number, end: number) {
+  const randomNum = Math.random() * (end - start + 1);
+  return start + Math.floor(randomNum);
+}

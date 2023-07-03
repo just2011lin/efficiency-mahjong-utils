@@ -1,4 +1,4 @@
-import random from 'lodash/random';
+import { random } from './script.util';
 
 function createCodeStr(key: string): string {
   const nums = key.split('').map(s => s.charCodeAt(0));
@@ -43,14 +43,23 @@ export function getOneMatchMahjongs(key: string) {
   return result;
 }
 
+/**
+ * 创建一个随机的数字或字母字符
+ * 数字0为48，数字9为57
+ * 字母A为65，字母Z为90
+ * 字母a为97，字母z为122
+ * 一共是62个字符，随机1-62，然后再找出其对应的字符
+ * @returns 数字字母字符
+ */
 function createOneRandomChar() {
-  const start = '0'.charCodeAt(0);
-  const end = 'z'.charCodeAt(0);
-  let char = '';
-  while (!/\d/.test(char) && !/[A-Za-z]/.test(char)) {
-    char = String.fromCharCode(random(start, end));
+  const num = random(1, 62);
+  if (num <= 10) {
+    return String.fromCharCode(47 + num);
+  } else if (num <= 36) {
+    return String.fromCharCode(64 + num - 10);
+  } else {
+    return String.fromCharCode(96 + num - 36);
   }
-  return char;
 }
 
 function createRandomKey(length: number) {
